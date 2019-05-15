@@ -1,5 +1,6 @@
 import pygame
 import map
+import entity_manager
 
 pygame.init()
 
@@ -10,16 +11,17 @@ green = (10, 123, 10)
 blue = (0, 0, 100)
 bg_color = white
 
-window_width = 600
-window_height = 600
+window_width = 640
+window_height = 320
 FPS = 30
 
 gameDisplay = pygame.display.set_mode((window_width, window_height))
 pygame.display.set_caption('Sztuczna inteligencja')
 clock = pygame.time.Clock()
 
+entity_manager = entity_manager.Entity_manager()
 mapa = map.Map()
-mapa.load_from_file()
+mapa.load_from_file(entity_manager)
 
 gameExit = False
 
@@ -37,7 +39,9 @@ while not gameExit: #game_loop
 
     gameDisplay.fill(bg_color)
     pygame.draw.rect(gameDisplay, red, test, 0)
-    mapa.Render(gameDisplay)
+    mapa.draw_map(gameDisplay, entity_manager)
+    # entity_manager.render(gameDisplay, entity_manager)
+    # mapa.Render(gameDisplay)
     pygame.display.update()
     clock.tick(FPS)
 pygame.quit()
