@@ -10,6 +10,8 @@ class Entity(ABCMeta('ABC', (object,), {'__slots__': ()})):
 
 class Slime(Entity):
     def __init__(self, x, y):
+        self.x = x
+        self.y = y
         Entity.__init__(self)
         self.s = Slime_Sprite(self, self.x, self.y)
 

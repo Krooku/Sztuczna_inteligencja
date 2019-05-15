@@ -5,7 +5,9 @@ TILESIZE = 32
 
 class Main_guy(entity.Entity):
     def __init__(self, x, y):
-        entity.__init__(self)
+        self.x = x
+        self.y = y
+        entity.Entity.__init__(self)
         self.s = Main_guy_Sprite(self, self.x, self.y)
 
     def use(self, benefitor):
