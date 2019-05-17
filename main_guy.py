@@ -7,8 +7,25 @@ class Main_guy(entity.Entity):
     def __init__(self, x, y):
         self.x = x
         self.y = y
+        self.step = TILESIZE
         entity.Entity.__init__(self)
         self.s = Main_guy_Sprite(self, self.x, self.y)
+
+    def move_right(self):
+        if self.rect.x + self.rect.width + self.step <= self.window_width:
+            self.rect.x += self.step
+
+    def move_left(self):
+        if self.rect.x >= self.step:
+            self.rect.x -= self.step
+
+    def move_down(self):
+        if self.rect.y + self.rect.height + self.step <= self.window_height:
+            self.rect.y += self.step
+
+    def move_up(self):
+        if self.rect.y >= self.step:
+            self.rect.y -= self.step
 
     def use(self, benefitor):
         # TODO
@@ -16,6 +33,8 @@ class Main_guy(entity.Entity):
 
     def die(self):
         self.active = False
+
+
 
 class Main_guy_Sprite(pygame.sprite.Sprite):
     def __init__(self, entity, x, y):
