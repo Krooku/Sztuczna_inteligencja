@@ -39,6 +39,9 @@ class Health_Potion(Item):
         # TODO
         self.die()
 
+    def get_active(self):
+        return self.active
+
     def die(self):
         self.active = False
 

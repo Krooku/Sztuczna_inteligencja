@@ -7,25 +7,73 @@ class Main_guy(entity.Entity):
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.step = TILESIZE
+        self.health = 100
+        self.attack = 20
         entity.Entity.__init__(self)
         self.s = Main_guy_Sprite(self, self.x, self.y)
+        self.font = pygame.font.SysFont("dejavusans", 54)
+        self.text_render = self.font.render(str(self.health), 1, (250, 10, 10))
 
-    def move_right(self):
-        if self.rect.x + self.rect.width + self.step <= self.window_width:
-            self.rect.x += self.step
+    def move(self, entityManager, map, direction):
+        if direction == "right" and map.getTileData(self.x+1, self.y).isCollidable == False:
+            if entityManager.entites[self.y][self.x+1] == 0:
+                entityManager.entites[self.y][self.x+1] = entityManager.entites[self.y][self.x]
+                entityManager.entites[self.y][self.x] = 0
+                self.x = self.x + 1
+            else:
+                self.entity_collision(entityManager.entites[self.y][self.x+1])
+                if entityManager.entites[self.y][self.x+1][1].get_active() == False:
+                    entityManager.entites[self.y][self.x + 1] = 0
+        elif direction == "left" and map.getTileData(self.x-1, self.y).isCollidable == False:
+            if entityManager.entites[self.y][self.x-1] == 0:
+                entityManager.entites[self.y][self.x-1] = entityManager.entites[self.y][self.x]
+                entityManager.entites[self.y][self.x] = 0
+                self.x = self.x - 1
+            else:
+                self.entity_collision(entityManager.entites[self.y][self.x-1])
+                if entityManager.entites[self.y][self.x-1][1].get_active() == False:
+                    entityManager.entites[self.y][self.x - 1] = 0
+        elif direction == "down" and map.getTileData(self.x, self.y+1).isCollidable == False:
+            if entityManager.entites[self.y+1][self.x] == 0:
+                entityManager.entites[self.y+1][self.x] = entityManager.entites[self.y][self.x]
+                entityManager.entites[self.y][self.x] = 0
+                self.y = self.y + 1
+            else:
+                self.entity_collision(entityManager.entites[self.y+1][self.x])
+                if entityManager.entites[self.y+1][self.x][1].get_active() == False:
+                    entityManager.entites[self.y + 1][self.x] = 0
 
-    def move_left(self):
-        if self.rect.x >= self.step:
-            self.rect.x -= self.step
+        elif direction == "up" and map.getTileData(self.x, self.y-1).isCollidable == False:
+            if entityManager.entites[self.y-1][self.x] == 0:
+                entityManager.entites[self.y-1][self.x] = entityManager.entites[self.y][self.x]
+                entityManager.entites[self.y][self.x] = 0
+                self.y = self.y - 1
+            else:
+                self.entity_collision(entityManager.entites[self.y-1][self.x])
+                if entityManager.entites[self.y-1][self.x][1].get_active() == False:
+                    entityManager.entites[self.y - 1][self.x] = 0
+                #print(entityManager.entites[self.y-1][self.x][1].health)
 
-    def move_down(self):
-        if self.rect.y + self.rect.height + self.step <= self.window_height:
-            self.rect.y += self.step
 
-    def move_up(self):
-        if self.rect.y >= self.step:
-            self.rect.y -= self.step
+    def entity_collision(self, entity):
+        if entity[0] == "monster":
+            entity[1].health -= self.attack
+            if entity[1].health <= 0:
+                entity[1].die()
+            else:
+                self.health -= entity[1].attack
+            self.text_render = self.font.render(str(self.health), 1, (250, 10, 10))
+            if self.health <= 0:
+                self.die()
+        elif entity[0] == "health_potion":
+            self.health += 70
+            if self.health > 100:
+                self.health = 100
+            self.text_render = self.font.render(str(self.health), 1, (250, 10, 10))
+            entity[1].die()
+
+    def render_text(self, display):
+        display.blit(self.text_render, (0, 0))
 
     def use(self, benefitor):
         # TODO

@@ -37,7 +37,7 @@ class Map:
                 if temp_key in textures:
                     screen.blit(self.tiles_data[column][row].image, (row*TILESIZE, column*TILESIZE))
                 if entity_manager.entites[column][row] != 0:
-                    screen.blit(entity_manager.entites[column][row].s.image, (row * TILESIZE, column * TILESIZE))
+                    screen.blit(entity_manager.entites[column][row][1].s.image, (row * TILESIZE, column * TILESIZE))
 
 
 
@@ -88,15 +88,15 @@ class Map:
         for line_arr in temp_arr:
             if line_arr[0] == 0:
                 obj = potions.Health_Potion(line_arr[1], line_arr[2])
-                entity_manager.add(obj, line_arr[1], line_arr[2])
+                entity_manager.add(("health_potion", obj), line_arr[1], line_arr[2])
                 self.getTileData(obj.x, obj.y).setOccupiedBy(obj)
             if line_arr[0] == 1:
                 obj = entity.Slime(line_arr[1], line_arr[2])
-                entity_manager.add(obj, line_arr[1], line_arr[2])
+                entity_manager.add(("monster", obj), line_arr[1], line_arr[2])
                 self.getTileData(obj.x, obj.y).setOccupiedBy(obj)
             if line_arr[0] == 2:
                 obj = main_guy.Main_guy(line_arr[1], line_arr[2])
-                entity_manager.add(obj, line_arr[1], line_arr[2])
+                entity_manager.add(("main_guy", obj), line_arr[1], line_arr[2])
                 self.getTileData(obj.x, obj.y).setOccupiedBy(obj)
 
     def getTileData(self,x,y):

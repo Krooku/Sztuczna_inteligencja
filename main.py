@@ -26,19 +26,25 @@ mapa.load_from_file(entity_manager)
 
 gameExit = False
 
-test = pygame.Rect(332, 32, 32, 32)
-
+guy = entity_manager.find("main_guy")
+font = pygame.font.SysFont("dejavusans", 54)
+end_text = font.render("NIE ZYJESZ", 1, (250, 255, 255))
 while not gameExit: #game_loop
     for event in pygame.event.get(): #event_loop
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_RIGHT:
-                main_guy.Main_guy.move_right()
+                #entity_manager.find("main_guy").move(entity_manager, mapa, "right")
+                if guy.active == True:
+                    guy.move(entity_manager, mapa, "right")
             elif event.key == pygame.K_LEFT:
-                main_guy.Main_guy.move_left()
+                if guy.active == True:
+                    guy.move(entity_manager, mapa, "left")
             elif event.key == pygame.K_DOWN:
-                main_guy.Main_guy.move_down()
+                if guy.active == True:
+                    guy.move(entity_manager, mapa, "down")
             elif event.key == pygame.K_UP:
-                main_guy.Main_guy.move_up()
+                if guy.active == True:
+                    guy.move(entity_manager, mapa, "up")
         if event.type == pygame.QUIT:
             gameExit = True
         if event.type == pygame.KEYDOWN:
@@ -47,10 +53,10 @@ while not gameExit: #game_loop
 
 
     gameDisplay.fill(bg_color)
-    pygame.draw.rect(gameDisplay, red, test, 0)
     mapa.draw_map(gameDisplay, entity_manager)
-    # entity_manager.render(gameDisplay, entity_manager)
-    # mapa.Render(gameDisplay)
+    guy.render_text(gameDisplay)
+    if guy.active == False:
+        gameDisplay.blit(end_text, (window_width / 2 - end_text.get_width() / 2, window_height / 2 - end_text.get_height() / 2))
     pygame.display.update()
     clock.tick(FPS)
 pygame.quit()

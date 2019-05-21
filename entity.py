@@ -6,14 +6,19 @@ TILESIZE = 32
 class Entity(ABCMeta('ABC', (object,), {'__slots__': ()})):
     def __init__(self):
         self.groupId = 0
-        self.activy = True
+        self.active = True
 
 class Slime(Entity):
     def __init__(self, x, y):
         self.x = x
         self.y = y
         Entity.__init__(self)
+        self.health = 100
+        self.attack = 10
         self.s = Slime_Sprite(self, self.x, self.y)
+
+    def get_active(self):
+        return self.active
 
     def die(self):
         self.active = False
