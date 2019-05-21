@@ -1,5 +1,7 @@
 import pygame
 import potions
+import entity
+import main_guy
 
 TILESIZE = 32
 
@@ -85,10 +87,15 @@ class Map:
 
         for line_arr in temp_arr:
             if line_arr[0] == 0:
-                print(line_arr[0])
-                print(line_arr[1])
-                print(line_arr[2])
                 obj = potions.Health_Potion(line_arr[1], line_arr[2])
+                entity_manager.add(obj, line_arr[1], line_arr[2])
+                self.getTileData(obj.x, obj.y).setOccupiedBy(obj)
+            if line_arr[0] == 1:
+                obj = entity.Slime(line_arr[1], line_arr[2])
+                entity_manager.add(obj, line_arr[1], line_arr[2])
+                self.getTileData(obj.x, obj.y).setOccupiedBy(obj)
+            if line_arr[0] == 2:
+                obj = main_guy.Main_guy(line_arr[1], line_arr[2])
                 entity_manager.add(obj, line_arr[1], line_arr[2])
                 self.getTileData(obj.x, obj.y).setOccupiedBy(obj)
 

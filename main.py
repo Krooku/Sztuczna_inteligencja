@@ -1,5 +1,6 @@
 import pygame
 import map
+import main_guy
 import entity_manager
 
 pygame.init()
@@ -29,12 +30,20 @@ test = pygame.Rect(332, 32, 32, 32)
 
 while not gameExit: #game_loop
     for event in pygame.event.get(): #event_loop
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_RIGHT:
+                main_guy.Main_guy.move_right()
+            elif event.key == pygame.K_LEFT:
+                main_guy.Main_guy.move_left()
+            elif event.key == pygame.K_DOWN:
+                main_guy.Main_guy.move_down()
+            elif event.key == pygame.K_UP:
+                main_guy.Main_guy.move_up()
         if event.type == pygame.QUIT:
             gameExit = True
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 gameExit = True
-
 
 
     gameDisplay.fill(bg_color)
